@@ -22,7 +22,7 @@ userSchema.methods.generateHash = function(password){
   debug('generateHash');
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
-      if (err) return reject(err);
+      if (err) return reject(httpErrors(400, err.message));
       this.password = hash;
       resolve(this);
     });
@@ -33,10 +33,10 @@ userSchema.methods.compareHash = function(password){
   debug('compareHash');
   return new Promise((resolve, reject) => {
     bcrypt.compare( password, this.password, (err, result) => {
-      // if bcrypt breaks, return status 500
-      if (err) return reject(err);
       // if wrong password
       if (!result) return reject(httpErrors(401, 'wrong password'));
+      // if bcrypt breaks, return status 500
+      if (err) return reject(err);
       resolve(this);
     });
   });
@@ -55,7 +55,7 @@ userSchema.methods.generateFindHash = function(){
       .catch((err) => {
         if (tries > 5) reject(err);
         tries++;
-        _generateFindHash.call(this); // i don't get what's going on here x_x
+        _generateFindHash.call(this);
       });
     }
   });

@@ -73,25 +73,22 @@ describe('testing module auth-router', function(){
       debug('test POST status 400 no body /api/signup');
       request.post(`${baseURL}/signup`)
       .send({})
-      .then(res => {
+      .end((err, res) => {
         expect(res.status).to.equal(400);
         done();
-      })
-      .catch(done);
+      });
     });
 
     it('should return status 400 for invalid body', function(done){
       debug('test POST status 400 invalid body /api/signup');
       request.post(`${baseURL}/signup`)
       .send({
-        fudge: 'muffins',
-        password: 'delicious'
+        fudge: 'muffins'
       })
-      .then(res => {
+      .end((err, res) => {
         expect(res.status).to.equal(400);
         done();
-      })
-      .catch(done);
+      });
     });
   }); // end POST test module
 
@@ -126,11 +123,10 @@ describe('testing module auth-router', function(){
       debug('test GET status 401');
       request.get(`${baseURL}/signin`)
       .auth('cort', 'wrongpassword')
-      .then(res => {
+      .end((err, res) => {
         expect(res.status).to.equal(401);
         done();
-      })
-      .catch(done);
+      });
     });
   }); // end GET test module
 

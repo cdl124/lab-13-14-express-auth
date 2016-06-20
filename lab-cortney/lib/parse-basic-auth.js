@@ -3,6 +3,7 @@
 const httpErrors = require('http-errors');
 const debug = require('debug')('authlab:parse-basic-auth');
 
+// this is for GET requests, not POST routes!
 module.exports = function(req, res, next){
   debug('parseBasicAuth');
   if (!req.headers.authorization){
@@ -24,7 +25,7 @@ module.exports = function(req, res, next){
     return next(httpErrors(401, 'no password provided'));
   }
   if (!req.auth.username && !req.auth.password){
-    return next(httpErrors(400, 'lol you didn\'t provide a user OR password'));
+    return next(httpErrors(400, 'both user and password were not provided'));
   }
   next();
 };

@@ -17,6 +17,7 @@ authRouter.post('/signup', jsonParser, function(req, res, next){
 });
 
 authRouter.get('/signin', parseBasicAuth, function(req, res, next){
+  debug('GET /signin');
   authController.signin(req.auth)
   .then( token => res.send(token))
   .catch(next);

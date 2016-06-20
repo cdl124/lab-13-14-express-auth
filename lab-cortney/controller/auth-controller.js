@@ -23,6 +23,7 @@ exports.signup = function(reqBody){
 };
 
 exports.signin = function(auth){
+  debug('signin');
   return new Promise((resolve, reject) => {
     User.findOne({username: auth.username})
     .then( user => user.compareHash(auth.password))
